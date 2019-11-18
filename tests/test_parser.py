@@ -1,12 +1,19 @@
 import unittest
+from io import BytesIO
 from unittest import mock
 
-from io import BytesIO
-
 import ldif
-
-from tests.common import DNS, RECORDS, LINES, BLOCKS, BYTES_SPACE, URL, URL_CONTENT, \
-    BYTES_EMPTY_ATTR_VALUE, BYTES
+from tests.common import (
+    BLOCKS,
+    BYTES,
+    BYTES_EMPTY_ATTR_VALUE,
+    BYTES_SPACE,
+    DNS,
+    LINES,
+    RECORDS,
+    URL,
+    URL_CONTENT,
+)
 
 
 class TestUnsafeString(unittest.TestCase):

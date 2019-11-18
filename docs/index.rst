@@ -1,5 +1,5 @@
-ldif3
-+++++
+ldif
+++++
 
 Introduction
 ============
@@ -9,7 +9,7 @@ Introduction
 API reference
 =============
 
-.. automodule:: ldif3
+.. automodule:: ldif
     :members:
 
 Changelog

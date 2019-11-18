@@ -9,7 +9,7 @@ rel = lambda *parts: os.path.abspath(os.path.join(DIRNAME, *parts))
 
 README = open(rel("README.rst")).read()
 MAIN = open(rel("ldif.py")).read()
-VERSION = re.search("__version__ = '([^']+)'", MAIN).group(1)
+VERSION = re.search('__version__ = "([^"]+)"', MAIN).group(1)
 NAME = re.search('^"""(.*) - (.*)"""', MAIN).group(1)
 DESCRIPTION = re.search('^"""(.*) - (.*)"""', MAIN).group(2)
 

@@ -20,7 +20,7 @@ __all__ = [
     "LDIFParser",
 ]
 
-log = logging.getLogger("ldif3")
+log = logging.getLogger("ldif")
 
 ATTRTYPE_PATTERN = r"[\w;.-]+(;[\w_-]+)*"
 ATTRVALUE_PATTERN = r'(([^,]|\\,)+|".*?")'

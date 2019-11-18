@@ -1,14 +1,3 @@
-import unittest
-from pprint import pprint
-from unittest import mock
-
-from io import BytesIO
-
-from pytest import fixture
-
-import ldif
-
-
 BYTES = b"""version: 1
 dn: cn=Alice Alison,
  mail=alicealison@example.com
