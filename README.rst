@@ -1,22 +1,25 @@
-ldif3 - generate and parse LDIF data (see `RFC 2849`_).
+ldif - generate and parse LDIF data (see `RFC 2849`_).
+======================================================
 
 This is a fork of the ``ldif`` module from `python-ldap`_ with python3/unicode
-support. See the first entry in CHANGES.rst for a more complete list of
+support.
+
+One of its benefits is that it's a pure-python package (you don't depend
+on the ``libldap2-dev`` (or similar) package that needs to be installed on
+your laptop / test machine / production server.
+
+See the first entry in CHANGES.rst for a more complete list of
 differences.
 
-Deprecated
-----------
+This package only support Python 3 (>= 3.6, actually).
 
-python-ldap will support python3/unicode in the upcoming `3.x
-<https://github.com/python-ldap/python-ldap/blob/master/CHANGES>`_ version.
-There is no longer a reason to use this project.
 
 Usage
 -----
 
 Parse LDIF from a file (or ``BytesIO``)::
 
-    from ldif3 import LDIFParser
+    from ldif import LDIFParser
     from pprint import pprint
 
     parser = LDIFParser(open('data.ldif', 'rb'))
@@ -27,7 +30,7 @@ Parse LDIF from a file (or ``BytesIO``)::
 
 Write LDIF to a file (or ``BytesIO``)::
 
-    from ldif3 import LDIFWriter
+    from ldif import LDIFWriter
 
     writer = LDIFWriter(open('data.ldif', 'wb'))
     writer.unparse('mail=alice@example.com', {

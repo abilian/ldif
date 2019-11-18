@@ -1,3 +1,11 @@
+4.0.0 (2019-11-18)
+------------------
+
+- Take over the maintenance of this package as we need if for our
+  customers (see: `<https://github.com/abilian/labandco>`_ ).
+- Drop Python 2 support.
+
+
 3.2.2 (2017-02-07)
 ------------------
 
