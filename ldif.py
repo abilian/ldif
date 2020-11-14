@@ -52,9 +52,9 @@ UNSAFE_STRING_PATTERN = (
 UNSAFE_STRING_RE = re.compile(UNSAFE_STRING_PATTERN)
 
 
-def lower(l):
+def lower(string_list):
     """Return a list with the lowercased items of l."""
-    return [i.lower() for i in l or []]
+    return [i.lower() for i in string_list or []]
 
 
 class LDIFWriter:
