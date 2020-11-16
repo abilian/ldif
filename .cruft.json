@@ -1,0 +1,24 @@
+{
+    "template": "https://github.com/abilian/cookiecutter-abilian-python",
+    "commit": "b1022e0cf9c93d4c1ba53d3804e434a70764226b",
+    "context": {
+        "cookiecutter": {
+            "full_name": "Stefane Fermigier",
+            "email": "sf@fermigier.com",
+            "github_username": "sfermigier",
+            "project_name": "ldif",
+            "project_slug": "ldif",
+            "project_short_description": "ldif - generate and parse LDIF data (see RFC 2849).",
+            "pypi_username": "sfermigier",
+            "version": "4.0.0",
+            "use_pytest": "y",
+            "use_pypi_deployment_with_travis": "n",
+            "add_pyup_badge": "n",
+            "command_line_interface": "No command-line interface",
+            "create_author_file": "y",
+            "open_source_license": "MIT license",
+            "_template": "https://github.com/abilian/cookiecutter-abilian-python"
+        }
+    },
+    "directory": null
+}
