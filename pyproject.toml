@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "ldif"
-version = "4.0.0"
+version = "4.0.1"
 description = "generate and parse LDIF data (see RFC 2849)."
 license = "BSD"
 classifiers = [
