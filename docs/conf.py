@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-import sys
 import os
 import subprocess
+import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(current_dir))

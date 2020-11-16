@@ -2,7 +2,7 @@ import unittest
 from io import BytesIO
 
 import ldif
-from tests.common import DNS, BYTES_OUT, RECORDS
+from tests.common import BYTES_OUT, DNS, RECORDS
 
 
 class TestLDIFWriter(unittest.TestCase):

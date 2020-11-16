@@ -3,17 +3,8 @@ from io import BytesIO
 from unittest import mock
 
 import ldif
-from tests.common import (
-    BLOCKS,
-    BYTES,
-    BYTES_EMPTY_ATTR_VALUE,
-    BYTES_SPACE,
-    DNS,
-    LINES,
-    RECORDS,
-    URL,
-    URL_CONTENT,
-)
+from tests.common import (BLOCKS, BYTES, BYTES_EMPTY_ATTR_VALUE, BYTES_SPACE,
+                          DNS, LINES, RECORDS, URL, URL_CONTENT)
 
 
 class TestUnsafeString(unittest.TestCase):
@@ -170,7 +161,15 @@ class TestLDIFParser(unittest.TestCase):
         items = list(self.p.parse())
         self.assertEqual(
             items,
-            [("cn=Bjorn J Jensen", {"jpegPhoto": [b"\xf0\xf2\xf3"], "foo": ["bar"],})],
+            [
+                (
+                    "cn=Bjorn J Jensen",
+                    {
+                        "jpegPhoto": [b"\xf0\xf2\xf3"],
+                        "foo": ["bar"],
+                    },
+                )
+            ],
         )
 
     def test_parse_binary_raw(self):
@@ -179,7 +178,15 @@ class TestLDIFParser(unittest.TestCase):
         items = list(self.p.parse())
         self.assertEqual(
             items,
-            [("cn=Bjorn J Jensen", {"jpegPhoto": [b"\xf0\xf2\xf3"], "foo": [b"bar"],})],
+            [
+                (
+                    "cn=Bjorn J Jensen",
+                    {
+                        "jpegPhoto": [b"\xf0\xf2\xf3"],
+                        "foo": [b"bar"],
+                    },
+                )
+            ],
         )
 
 

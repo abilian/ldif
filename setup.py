@@ -2,6 +2,7 @@
 
 import os
 import re
+
 from setuptools import setup
 
 DIRNAME = os.path.abspath(os.path.dirname(__file__))

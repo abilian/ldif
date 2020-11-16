@@ -2,11 +2,10 @@
 
 
 import base64
-import re
 import logging
+import re
 from collections import OrderedDict
 from typing import Optional
-
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
