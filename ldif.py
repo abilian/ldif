@@ -109,8 +109,8 @@ class LDIFWriter:
     def _needs_base64_encoding(self, attr_type, attr_value):
         """Return True if attr_value has to be base-64 encoded.
 
-        This is the case because of special chars or because attr_type is in
-        self._base64_attrs
+        This is the case because of special chars or because attr_type
+        is in self._base64_attrs
         """
         return (
             attr_type.lower() in self._base64_attrs
@@ -253,7 +253,10 @@ class LDIFParser:
         self.records_read = 0  #: number of records that have been read
 
     def _iter_unfolded_lines(self):
-        """Iter input unfoled lines. Skip comments."""
+        """Iter input unfoled lines.
+
+        Skip comments.
+        """
         line = self._input_file.readline()
         while line:
             self.line_counter += 1
