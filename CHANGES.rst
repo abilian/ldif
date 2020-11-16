@@ -1,4 +1,4 @@
-4.0.0 (unreleased)
+4.0.0 (2019-11-18)
 ------------------
 
 - Take over the maintenance of this package as we need if for our
