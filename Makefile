@@ -127,8 +127,9 @@ doc-pdf:
 	make -C docs/_build/latex all-pdf
 
 clean:
+	rm -f **/*.pyc
 	find . -type d -empty -delete
-	rm -rf **/__pycache__ *.egg-info *.egg .coverage .eggs .cache .mypy_cache .pyre \
+	rm -rf *.egg-info *.egg .coverage .eggs .cache .mypy_cache .pyre \
 		.pytest_cache .pytest .DS_Store  docs/_build docs/cache docs/tmp \
 		dist build pip-wheel-metadata junit-*.xml htmlcov coverage.xml
 
@@ -149,4 +150,3 @@ release:
 update-deps:
 	pip install -U pip setuptools wheel
 	poetry update
-	poetry export -o requirements.txt
