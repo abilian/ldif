@@ -134,19 +134,13 @@ clean:
 		dist build pip-wheel-metadata junit-*.xml htmlcov coverage.xml
 
 tidy: clean
-	rm -rf .tox .nox .dox .travis-solo
-	rm -rf node_modules
-	rm -rf instance
-
-update-pot:
-	# _n => ngettext, _l => lazy_gettext
-	python setup.py extract_messages update_catalog compile_catalog
-
-release:
-	maketag
-	git push --tags
-	poetry publish --build
+	rm -rf .tox
 
 update-deps:
 	pip install -U pip setuptools wheel
 	poetry update
+
+publish: clean
+	git push --tags
+	poetry build
+	twine upload dist/*

@@ -1,10 +1,16 @@
 # Config file for automatic testing at travis-ci.com
 
 language: python
+
 python:
   - 3.8
   - 3.7
   - 3.6
+
+cache:
+  pip: true
+  directories:
+    - .tox
 
 matrix:
   include:
@@ -16,3 +22,11 @@ install: pip install -U pip setuptools wheel tox tox-travis poetry
 
 # Command to run tests, e.g. python setup.py test
 script: tox
+
+# This includes the key to our Slack channel. Delete or use yours.
+notifications:
+  slack:
+    rooms:
+      - abilian:dTtRD7DHS4Dw3jfRrqytQWU6#code
+    on_success: change
+    on_failure: always
