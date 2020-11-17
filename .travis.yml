@@ -6,6 +6,11 @@ python:
   - 3.7
   - 3.6
 
+matrix:
+  include:
+    - python: 3.8
+      env: TOXENV=lint
+
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U pip setuptools wheel tox tox-travis poetry
 
