@@ -1,4 +1,3 @@
-[tool]
 [tool.poetry]
 name = "ldif"
 version = "4.0.1"
@@ -53,9 +52,28 @@ pyyaml = "*"
 # Doc
 restructuredtext_lint = "*"
 
-[tool.isort]
-profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.isort]
+profile = "black"
+
+
+[tool.coverage.run]
+# parallel = true
+# branch = true
+source = ["ldif"]
+
+[tool.coverage.paths]
+source = ["src", ".tox/*/site-packages"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    # PyPy is unacceptably slow under coverage.
+    "if PYPY:",
+]

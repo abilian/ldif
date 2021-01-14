@@ -1,7 +1,5 @@
 .PHONY: all develop test lint clean doc format
 
-# The source directory
-SRC=ldif.py
 
 # The package name
 PKG=ldif
@@ -69,12 +67,12 @@ lint-all: lint lint-mypy lint-bandit
 
 lint-py:
 	@echo "--> Linting Python files /w flake8"
-	flake8 $(SRC)
+	flake8 src tests
 	@echo ""
 
 lint-mypy:
 	@echo "--> Typechecking Python files w/ mypy"
-	mypy $(SRC)
+	mypy src tests
 	@echo ""
 
 lint-travis:
