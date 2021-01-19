@@ -51,6 +51,7 @@ pyyaml = "*"
 
 # Doc
 restructuredtext_lint = "*"
+typeguard = "^2.10.0"
 
 
 [build-system]
