@@ -48,16 +48,16 @@ class TestUnsafeString(unittest.TestCase):
 
 class TestLower(unittest.TestCase):
     def test_happy(self):
-        self.assertEqual(ldif.lower(["ASD", "HuHu"]), ["asd", "huhu"])
+        assert ldif.lower(["ASD", "HuHu"]) == ["asd", "huhu"]
 
     def test_falsy(self):
-        self.assertEqual(ldif.lower(None), [])
+        assert ldif.lower(None) == []
 
     def test_dict(self):
-        self.assertEqual(ldif.lower({"Foo": "bar"}), ["foo"])
+        assert ldif.lower({"Foo": "bar"}) == ["foo"]
 
     def test_set(self):
-        self.assertEqual(ldif.lower({"FOo"}), ["foo"])
+        assert ldif.lower({"FOo"}) == ["foo"]
 
 
 class TestIsDn(unittest.TestCase):
@@ -71,24 +71,24 @@ class TestLDIFParser(unittest.TestCase):
         self.p = ldif.LDIFParser(self.stream)
 
     def test_strip_line_sep(self):
-        self.assertEqual(self.p._strip_line_sep(b"asd \n"), b"asd ")
-        self.assertEqual(self.p._strip_line_sep(b"asd\t\n"), b"asd\t")
-        self.assertEqual(self.p._strip_line_sep(b"asd\r\n"), b"asd")
-        self.assertEqual(self.p._strip_line_sep(b"asd\r\t\n"), b"asd\r\t")
-        self.assertEqual(self.p._strip_line_sep(b"asd\n\r"), b"asd\n\r")
-        self.assertEqual(self.p._strip_line_sep(b"asd"), b"asd")
-        self.assertEqual(self.p._strip_line_sep(b"  asd  "), b"  asd  ")
+        assert self.p._strip_line_sep(b"asd \n") == b"asd "
+        assert self.p._strip_line_sep(b"asd\t\n") == b"asd\t"
+        assert self.p._strip_line_sep(b"asd\r\n") == b"asd"
+        assert self.p._strip_line_sep(b"asd\r\t\n") == b"asd\r\t"
+        assert self.p._strip_line_sep(b"asd\n\r") == b"asd\n\r"
+        assert self.p._strip_line_sep(b"asd") == b"asd"
+        assert self.p._strip_line_sep(b"  asd  ") == b"  asd  "
 
     def test_iter_unfolded_lines(self):
-        self.assertEqual(list(self.p._iter_unfolded_lines()), LINES)
+        assert list(self.p._iter_unfolded_lines()) == LINES
 
     def test_iter_blocks(self):
-        self.assertEqual(list(self.p._iter_blocks()), BLOCKS)
+        assert list(self.p._iter_blocks()) == BLOCKS
 
     def test_iter_blocks_with_additional_spaces(self):
         self.stream = BytesIO(BYTES_SPACE)
         self.p = ldif.LDIFParser(self.stream)
-        self.assertEqual(list(self.p._iter_blocks()), BLOCKS)
+        assert list(self.p._iter_blocks()) == BLOCKS
 
     def _test_error(self, fn):
         self.p._strict = True
@@ -127,8 +127,8 @@ class TestLDIFParser(unittest.TestCase):
 
     def test_parse_attr_base64(self):
         attr_type, attr_value = self.p._parse_attr(b"foo:: YQpiCmM=\n")
-        self.assertEqual(attr_type, "foo")
-        self.assertEqual(attr_value, "a\nb\nc")
+        assert attr_type == "foo"
+        assert attr_value == "a\nb\nc"
 
     def test_parse_attr_url(self):
         self.p._process_url_schemes = [b"https"]
@@ -137,12 +137,12 @@ class TestLDIFParser(unittest.TestCase):
 
     def test_parse_attr_url_all_ignored(self):
         attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
-        self.assertEqual(attr_value, "")
+        assert attr_value == ""
 
     def test_parse_attr_url_this_ignored(self):
         self.p._process_url_schemes = [b"file"]
         attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
-        self.assertEqual(attr_value, "")
+        assert attr_value == ""
 
     def test_parse_attr_dn_non_utf8(self):
         def run():
@@ -151,8 +151,8 @@ class TestLDIFParser(unittest.TestCase):
                 b"\x69\x7a\x6e\x65\x73\x75\x40\x77\n"
             )
             attr_type, attr_value = self.p._parse_attr(attr)
-            self.assertEqual(attr_type, "dn")
-            self.assertEqual(attr_value, "uid=koobiznesu@w")
+            assert attr_type == "dn"
+            assert attr_value == "uid=koobiznesu@w"
 
         self._test_error(run)
 
@@ -161,42 +161,36 @@ class TestLDIFParser(unittest.TestCase):
         for i, item in enumerate(items):
             dn, record = item
 
-            self.assertEqual(dn, DNS[i])
-            self.assertEqual(record, RECORDS[i])
+            assert dn == DNS[i]
+            assert record == RECORDS[i]
 
     def test_parse_binary(self):
         self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
         self.p = ldif.LDIFParser(self.stream)
         items = list(self.p.parse())
-        self.assertEqual(
-            items,
-            [
-                (
-                    "cn=Bjorn J Jensen",
-                    {
-                        "jpegPhoto": [b"\xf0\xf2\xf3"],
-                        "foo": ["bar"],
-                    },
-                )
-            ],
-        )
+        assert items == [
+            (
+                "cn=Bjorn J Jensen",
+                {
+                    "jpegPhoto": [b"\xf0\xf2\xf3"],
+                    "foo": ["bar"],
+                },
+            )
+        ]
 
     def test_parse_binary_raw(self):
         self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
         self.p = ldif.LDIFParser(self.stream, encoding=None)
         items = list(self.p.parse())
-        self.assertEqual(
-            items,
-            [
-                (
-                    "cn=Bjorn J Jensen",
-                    {
-                        "jpegPhoto": [b"\xf0\xf2\xf3"],
-                        "foo": [b"bar"],
-                    },
-                )
-            ],
-        )
+        assert items == [
+            (
+                "cn=Bjorn J Jensen",
+                {
+                    "jpegPhoto": [b"\xf0\xf2\xf3"],
+                    "foo": [b"bar"],
+                },
+            )
+        ]
 
 
 class TestLDIFParserEmptyAttrValue(unittest.TestCase):
@@ -210,4 +204,4 @@ class TestLDIFParserEmptyAttrValue(unittest.TestCase):
     def test_parse_value(self):
         dn, record = list(self.p.parse())[0]
 
-        self.assertEqual(record["aliases"], ["", "foo.bar"])
+        assert record["aliases"] == ["", "foo.bar"]
