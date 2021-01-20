@@ -25,25 +25,25 @@ class TestUnsafeString(unittest.TestCase):
             try:
                 match = ldif.UNSAFE_STRING_RE.search(fn(i))
                 if i <= 127 and chr(i) not in unsafes:
-                    self.assertIsNone(match)
+                    assert match is None
                 else:
-                    self.assertIsNotNone(match)
+                    assert match is not None
             except AssertionError:
                 print(i)
                 raise
 
     def test_unsafe_chars(self):
-        self._test_all(self.unsafe_chars, lambda i: "a%s" % chr(i))
+        self._test_all(self.unsafe_chars, lambda i: f"a{chr(i)}")
 
     def test_unsafe_chars_init(self):
-        self._test_all(self.unsafe_chars_init, lambda i: "%s" % chr(i))
+        self._test_all(self.unsafe_chars_init, lambda i: f"{chr(i)}")
 
     def test_example(self):
         s = "cn=Alice, Alison,mail=Alice.Alison@example.com"
-        self.assertIsNone(ldif.UNSAFE_STRING_RE.search(s))
+        assert ldif.UNSAFE_STRING_RE.search(s) is None
 
     def test_trailing_newline(self):
-        self.assertIsNotNone(ldif.UNSAFE_STRING_RE.search("asd\n"))
+        assert ldif.UNSAFE_STRING_RE.search("asd\n") is not None
 
 
 class TestLower(unittest.TestCase):
