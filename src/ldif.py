@@ -26,10 +26,10 @@ ATTRVALUE_PATTERN = r'(([^,]|\\,)+|".*?")'
 ATTR_PATTERN = ATTRTYPE_PATTERN + r"[ ]*=[ ]*" + ATTRVALUE_PATTERN
 RDN_PATTERN = ATTR_PATTERN + r"([ ]*\+[ ]*" + ATTR_PATTERN + r")*[ ]*"
 DN_PATTERN = RDN_PATTERN + r"([ ]*,[ ]*" + RDN_PATTERN + r")*[ ]*"
-DN_REGEX = re.compile("^%s$" % DN_PATTERN)
+DN_REGEX = re.compile(f"^{DN_PATTERN}$")
 
 LDIF_PATTERN = (
-    "^((dn(:|::) %(DN_PATTERN)s)|(%(ATTRTYPE_PATTERN) s(:|::) .*)$)+" % vars()
+    f"^((dn(:|::) {vars()['DN_PATTERN']})|(%(ATTRTYPE_PATTERN) s(:|::) .*)$)+"
 )
 
 MOD_OPS = ["add", "delete", "replace"]
@@ -334,8 +334,7 @@ class LDIFParser:
             self._error("Two lines starting with dn: in one record.")
         if not is_dn(attr_value):
             self._error(
-                "No valid string-representation of "
-                "distinguished name %s." % attr_value
+                f"No valid string-representation of distinguished name {attr_value}."
             )
 
     def _check_changetype(self, dn, changetype, attr_value):
@@ -345,7 +344,7 @@ class LDIFParser:
         if changetype is not None:
             self._error("Two lines starting with changetype: in one record.")
         if attr_value not in CHANGE_TYPES:
-            self._error("changetype value %s is invalid." % attr_value)
+            self._error(f"changetype value {attr_value} is invalid.")
 
     def _parse_entry_record(self, lines):
         """Parse a single entry record from a list of lines."""
