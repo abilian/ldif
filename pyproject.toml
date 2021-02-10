@@ -13,7 +13,7 @@ classifiers = [
 ]
 homepage = "https://github.com/abilian/ldif"
 authors = ["Abilian SAS <dev@abilian.com>"]
-readme = "README.rst"
+readme = "README.md"
 
 
 [tool.poetry.dependencies]
