@@ -1,12 +1,10 @@
 # ldif - generate and parse LDIF data (see [RFC 2849](https://tools.ietf.org/html/rfc2849)).
 
-<br>
-<img alt="Commit activity" src="https://img.shields.io/github/commit-activity/m/abilian/ldif">
-<img alt="Code size in bytes" src="https://img.shields.io/github/languages/code-size/abilian/ldif">
-<img alt="License" src="https://img.shields.io/github/license/abilian/ldif">
-<img alt="Latest version" src="https://img.shields.io/pypi/v/ldif">
-<img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/ldif">
-
+![Commit activity](https://img.shields.io/github/commit-activity/m/abilian/ldif)
+![Code size in bytes](https://img.shields.io/github/languages/code-size/abilian/ldif)
+![License](https://img.shields.io/github/license/abilian/ldif)
+![Latest version](https://img.shields.io/pypi/v/ldif)
+![PyPI Downloads](https://img.shields.io/pypi/dm/ldif)
 
 This is a fork of the `ldif` module from
 [python-ldap](http://www.python-ldap.org/) with python3/unicode support.

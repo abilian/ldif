@@ -25,11 +25,10 @@ configure-git:
 	@echo "--> Configuring git"
 	git config branch.autosetuprebase always
 
-
 #
 # testing & checking
 #
-test-all: test test-readme
+test-all: test
 
 test:
 	@echo "--> Running Python tests"
@@ -51,15 +50,10 @@ test-with-typeguard:
 	pytest --typeguard-packages=${PKG}
 	@echo ""
 
-vagrant-tests:
-	vagrant up
-	vagrant ssh -c /vagrant/deploy/vagrant_test.sh
-
-
 #
 # Various Checkers
 #
-lint: lint-py lint-js lint-rst lint-doc
+lint: lint-py lint-rst lint-doc
 
 lint-ci: lint
 
@@ -92,22 +86,15 @@ lint-doc:
 	#sphinx-build -b dummy docs/ docs/_build/
 	@echo ""
 
-lint-js:
-	echo "TODO"
-
 #
 # Formatting
 #
-format: format-py format-js
+format: format-py
 
 format-py:
 	docformatter -i -r src tests
 	black src tests
 	isort src tests
-
-format-js:
-	echo "TODO"
-
 
 #
 # Everything else
