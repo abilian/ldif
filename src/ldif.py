@@ -9,7 +9,7 @@ from typing import Collection, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-__version__ = "4.0.3"
+__version__ = "4.1.0"
 
 __all__ = [
     # constants
