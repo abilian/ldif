@@ -243,7 +243,7 @@ class LDIFParser:
         self.byte_counter = 0  #: number of bytes that have been read
         self.records_read = 0  #: number of records that have been read
 
-    def parse(self) -> Iterator[Tuple[str, dict]]:
+    def parse(self) -> Iterator[Tuple[Optional[str], dict]]:
         """Iterate LDIF entry records.
 
         :rtype: Iterator[Tuple[string, Dict]]
@@ -356,32 +356,34 @@ class LDIFParser:
         if attr_value not in CHANGE_TYPES:
             self._error(f"changetype value {attr_value} is invalid.")
 
-    def _parse_entry_record(self, lines: List[bytes]) -> Tuple[str, dict]:
+    def _parse_entry_record(self, lines: List[bytes]) -> Tuple[Optional[str], dict]:
         """Parse a single entry record from a list of lines."""
         dn = None
-        entry = OrderedDict()
+        entry: dict = OrderedDict()
 
         for line in lines:
             attr_type, attr_value = self._parse_attr(line)
 
+            if attr_type == "version" and dn is None:
+                continue  # version = 1
+
             if attr_type == "dn":
                 self._check_dn(dn, attr_value)
                 dn = attr_value
-            elif attr_type == "version" and dn is None:
-                pass  # version = 1
+                continue
+
+            if dn is None:
+                self._error(
+                    f"First line of record does not start with 'dn:': {attr_type}"
+                )
+                continue
+
+            if attr_type.lower() in self._ignored_attr_types:
+                continue
+
+            if attr_type in entry:
+                entry[attr_type].append(attr_value)
             else:
-                if dn is None:
-                    self._error(
-                        "First line of record does not start "
-                        'with "dn:": %s' % attr_type
-                    )
-                if (
-                    attr_value is not None
-                    and attr_type.lower() not in self._ignored_attr_types
-                ):
-                    if attr_type in entry:
-                        entry[attr_type].append(attr_value)
-                    else:
-                        entry[attr_type] = [attr_value]
+                entry[attr_type] = [attr_value]
 
         return dn, entry
