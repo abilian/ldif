@@ -5,11 +5,11 @@ import base64
 import logging
 import re
 from collections import OrderedDict
-from typing import Optional
+from typing import Collection, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-__version__ = "4.0.1"
+__version__ = "4.0.3"
 
 __all__ = [
     # constants
@@ -36,7 +36,7 @@ MOD_OPS = ["add", "delete", "replace"]
 CHANGE_TYPES = ["add", "delete", "modify", "modrdn"]
 
 
-def is_dn(s):
+def is_dn(s: str) -> bool:
     """Return True if s is a LDAP DN."""
     if s == "":
         return True
@@ -51,7 +51,7 @@ UNSAFE_STRING_PATTERN = (
 UNSAFE_STRING_RE = re.compile(UNSAFE_STRING_PATTERN)
 
 
-def lower(string_list):
+def lower(string_list: Optional[Collection[str]]) -> List[str]:
     """Return a list with the lowercased items of l."""
     return [i.lower() for i in string_list or []]
 
@@ -90,8 +90,8 @@ class LDIFWriter:
 
         self.records_written = 0  #: number of records that have been written
 
-    def _fold_line(self, line):
-        """Write string line as one or more folded lines."""
+    def _fold_line(self, line: bytes) -> None:
+        """Output string line as one or more folded lines."""
         if len(line) <= self._cols:
             self._output_file.write(line)
             self._output_file.write(self._line_sep)
@@ -173,7 +173,7 @@ class LDIFWriter:
             if mod_len == 3:
                 self._output_file.write(b"-" + self._line_sep)
 
-    def unparse(self, dn, record):
+    def unparse(self, dn: str, record: Union[list, dict]):
         """Write an entry or change record to the output file.
 
         :type dn: string
@@ -189,7 +189,7 @@ class LDIFWriter:
         elif isinstance(record, list):
             self._unparse_change_record(record)
         else:
-            raise ValueError("Argument record must be dictionary or list")
+            raise TypeError("Argument record must be dictionary or list")
         self._output_file.write(self._line_sep)
         self.records_written += 1
 
@@ -223,15 +223,6 @@ class LDIFParser:
         log warnings rather than exceptions.
     """
 
-    def _strip_line_sep(self, s):
-        """Strip trailing line separators from s, but no other whitespaces."""
-        if s[-2:] == b"\r\n":
-            return s[:-2]
-        elif s[-1:] == b"\n":
-            return s[:-1]
-        else:
-            return s
-
     def __init__(
         self,
         input_file,
@@ -251,6 +242,25 @@ class LDIFParser:
         self.line_counter = 0  #: number of lines that have been read
         self.byte_counter = 0  #: number of bytes that have been read
         self.records_read = 0  #: number of records that have been read
+
+    def parse(self) -> Iterator[Tuple[str, dict]]:
+        """Iterate LDIF entry records.
+
+        :rtype: Iterator[Tuple[string, Dict]]
+        :return: (dn, entry)
+        """
+        for block in self._iter_blocks():
+            yield self._parse_entry_record(block)
+
+    @staticmethod
+    def _strip_line_sep(s):
+        """Strip trailing line separators from s, but no other whitespaces."""
+        if s[-2:] == b"\r\n":
+            return s[:-2]
+        elif s[-1:] == b"\n":
+            return s[:-1]
+        else:
+            return s
 
     def _iter_unfolded_lines(self):
         """Iter input unfoled lines.
@@ -346,7 +356,7 @@ class LDIFParser:
         if attr_value not in CHANGE_TYPES:
             self._error(f"changetype value {attr_value} is invalid.")
 
-    def _parse_entry_record(self, lines):
+    def _parse_entry_record(self, lines: List[bytes]) -> Tuple[str, dict]:
         """Parse a single entry record from a list of lines."""
         dn = None
         entry = OrderedDict()
@@ -375,12 +385,3 @@ class LDIFParser:
                         entry[attr_type] = [attr_value]
 
         return dn, entry
-
-    def parse(self):
-        """Iterate LDIF entry records.
-
-        :rtype: Iterator[Tuple[string, Dict]]
-        :return: (dn, entry)
-        """
-        for block in self._iter_blocks():
-            yield self._parse_entry_record(block)

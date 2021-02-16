@@ -53,11 +53,11 @@ test-with-typeguard:
 #
 # Various Checkers
 #
-lint: lint-py lint-rst lint-doc
+lint: lint-py lint-mypy lint-rst lint-doc
 
 lint-ci: lint
 
-lint-all: lint lint-mypy lint-bandit
+lint-all: lint lint-bandit
 
 lint-py:
 	@echo "--> Linting Python files /w flake8"

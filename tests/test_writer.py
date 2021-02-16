@@ -84,7 +84,7 @@ class TestLDIFWriter(unittest.TestCase):
         assert value == BYTES_OUT
 
     def test_unparse_fail(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.w.unparse(DNS[0], "foo")
 
     def test_unparse_binary(self):

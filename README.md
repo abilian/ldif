@@ -1,4 +1,4 @@
-# ldif - generate and parse LDIF data (see [RFC 2849](https://tools.ietf.org/html/rfc2849)).
+# ldif - parse and generate LDIF data (see [RFC 2849](https://tools.ietf.org/html/rfc2849)).
 
 ![Commit activity](https://img.shields.io/github/commit-activity/m/abilian/ldif)
 ![Code size in bytes](https://img.shields.io/github/languages/code-size/abilian/ldif)
@@ -11,9 +11,9 @@ This is a fork of the `ldif` module from
 
 One of its benefits is that it's a pure-python package (you don't
 depend on the `libldap2-dev` (or similar) package that needs to be
-installed on your laptop / test machine / production server.
+installed on your laptop / test machine / production server).
 
-See the first entry in CHANGES.rst for a more complete list of
+See the first entry in [CHANGES.rst](CHANGES.rst) for a more complete list of
 differences.
 
 This package only support Python 3 (\>= 3.6, actually).
@@ -26,7 +26,7 @@ Parse LDIF from a file (or `BytesIO`):
 from ldif import LDIFParser
 from pprint import pprint
 
-parser = LDIFParser(open('data.ldif', 'rb'))
+parser = LDIFParser(open("data.ldif", "rb"))
 for dn, record in parser.parse():
     print('got entry record: %s' % dn)
     pprint(record)
@@ -37,11 +37,11 @@ Write LDIF to a file (or `BytesIO`):
 ```python
 from ldif import LDIFWriter
 
-writer = LDIFWriter(open('data.ldif', 'wb'))
-writer.unparse('mail=alice@example.com', {
-    'cn': ['Alice Alison'],
-    'mail': ['alice@example.com'],
-    'objectclass': ['top', 'person'],
+writer = LDIFWriter(open("data.ldif", "wb"))
+writer.unparse("mail=alice@example.com", {
+    "cn": ["Alice Alison"],
+    "mail": ["alice@example.com"],
+    "objectclass": ["top", "person"],
 })
 ```
 
