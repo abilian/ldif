@@ -52,7 +52,9 @@ safety = "*"
 pyyaml = "*"
 
 # Doc
+sphinx-rtd-theme = "*"
 restructuredtext_lint = "*"
+recommonmark = "^0.7.1"
 
 
 [build-system]

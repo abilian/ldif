@@ -4,7 +4,7 @@ ldif
 Introduction
 ============
 
-.. include:: ../README.rst
+.. include:: ./readme.rst
 
 API reference
 =============
