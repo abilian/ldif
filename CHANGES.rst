@@ -1,8 +1,13 @@
+4.1.1 (2021-03-04)
+------------------
+
+- Fix documentation generation -> `<https://ldif.readthedocs.io/>`_.
+
+
 4.1.0 (2021-02-16)
 ------------------
 
 - Add type annotations.
-- Drop Python 3.6 support.
 
 
 4.0.0 (2019-11-18)
