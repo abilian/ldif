@@ -30,6 +30,12 @@ jobs:
         environment:
           - TOXENV=lint
           - UPLOAD_COVERAGE=0
+  py36:
+    <<: *common
+    docker:
+      - image: circleci/python:3.6
+        environment:
+          TOXENV=py36
   py37:
     <<: *common
     docker:
