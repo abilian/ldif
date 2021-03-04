@@ -4,7 +4,7 @@ version = "4.1.0"
 description = "generate and parse LDIF data (see RFC 2849)."
 license = "BSD"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Stable",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "License :: OSI Approved :: BSD License",
@@ -12,12 +12,13 @@ classifiers = [
     "Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP",
 ]
 homepage = "https://github.com/abilian/ldif"
+documentation = "https://ldif.readthedocs.io/en/latest/"
 authors = ["Abilian SAS <dev@abilian.com>"]
 readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = ">3.6,<4"
+python = "^3.7"
 
 
 [tool.poetry.dev-dependencies]
@@ -52,9 +53,10 @@ safety = "*"
 pyyaml = "*"
 
 # Doc
+sphinx = "*"
 sphinx-rtd-theme = "*"
 restructuredtext_lint = "*"
-recommonmark = "^0.7.1"
+recommonmark = "*"
 
 
 [build-system]
