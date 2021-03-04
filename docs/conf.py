@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append("../src")
+
 extensions = ["sphinx.ext.autodoc", "recommonmark"]
 master_doc = "index"
 project = "LDIF"
