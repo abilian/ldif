@@ -10,16 +10,14 @@ common: &common
     - run:
         name: install dependencies
         command: |
-            pip install --user tox codecov "coverage<5"
+            pip install --user setuptools wheel poetry tox
     - run:
         name: run tox
-        command: ~/.local/bin/tox
+        command: tox
     - save_cache:
         paths:
           - .tox
           - ~/.cache/pip
-          - ~/.local
-          - ./eggs
         key: v2-deps-{{ .Environment.CIRCLE_JOB }}-{{ checksum "poetry.lock" }}
 
 jobs:
