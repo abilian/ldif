@@ -13,10 +13,11 @@ One of its benefits is that it's a pure-python package (you don't
 depend on the `libldap2-dev` (or similar) package that needs to be
 installed on your laptop / test machine / production server).
 
-See the first entry in [CHANGES.rst](CHANGES.rst) for a more complete list of
+See the first entry in changelog below for a more complete list of
 differences.
 
-This package only support Python 3 (\>= 3.6, actually).
+This package only support Python 3 (\>= 3.7, actually).
+
 
 ## Usage
 
@@ -44,6 +45,7 @@ writer.unparse("mail=alice@example.com", {
     "objectclass": ["top", "person"],
 })
 ```
+
 
 ## Unicode support
 

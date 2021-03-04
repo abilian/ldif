@@ -1,8 +1,5 @@
-ldif
-++++
-
-Introduction
-============
+ldif package documentation
+++++++++++++++++++++++++++
 
 .. include:: ./readme.rst
 
