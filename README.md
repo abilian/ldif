@@ -13,7 +13,7 @@ One of its benefits is that it's a pure-python package (you don't
 depend on the `libldap2-dev` (or similar) package that needs to be
 installed on your laptop / test machine / production server).
 
-See the first entry in changelog below for a more complete list of
+See the last entry in [changelog](https://github.com/abilian/ldif/blob/main/CHANGES.rst) for a more complete list of
 differences.
 
 This package only support Python 3 (\>= 3.7, actually).
