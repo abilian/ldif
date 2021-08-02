@@ -9,8 +9,7 @@ common: &common
           - v2-deps-{{ .Environment.CIRCLE_JOB }}-{{ checksum "poetry.lock" }}
     - run:
         name: install dependencies
-        command: |
-            pip install --user setuptools wheel poetry tox
+        command: pip install --user setuptools wheel poetry tox
     - run:
         name: run tox
         command: tox
@@ -27,7 +26,12 @@ jobs:
       - image: circleci/python:3.8
         environment:
           - TOXENV=lint
-          - UPLOAD_COVERAGE=0
+  safety:
+    <<: *common
+    docker:
+      - image: circleci/python:3.8
+        environment:
+          TOXENV=safety
   py37:
     <<: *common
     docker:
@@ -52,6 +56,7 @@ workflows:
   test:
     jobs:
       - lint
+      - safety
       - py37
       - py38
       - py39
