@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ldif"
-version = "4.1.1"
+version = "4.1.2"
 description = "generate and parse LDIF data (see RFC 2849)."
 license = "BSD"
 classifiers = [
@@ -57,6 +57,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 restructuredtext_lint = "*"
 recommonmark = "*"
+portray = "^1.7.0"
 
 
 [build-system]
