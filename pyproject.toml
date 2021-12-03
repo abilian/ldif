@@ -18,16 +18,16 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 
 
 [tool.poetry.dev-dependencies]
 # Testing
 pytest = "*"
-pytest-randomly = "^3.5.0"
+pytest-randomly = "*"
 pytest-cov = "*"
 coveralls = "*"
-typeguard = "^2.10.0"
+typeguard = "*"
 
 # Linting
 flake8 = "*"
@@ -57,7 +57,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 restructuredtext_lint = "*"
 recommonmark = "*"
-portray = "^1.7.0"
+portray = "*"
 
 
 [build-system]
