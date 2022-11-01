@@ -1,6 +1,7 @@
-import unittest
 from io import BytesIO
 from unittest import mock
+
+import pytest
 
 import ldif
 from tests.common import (
@@ -16,7 +17,7 @@ from tests.common import (
 )
 
 
-class TestUnsafeString(unittest.TestCase):
+class TestUnsafeString:
     unsafe_chars = ["\0", "\n", "\r"]
     unsafe_chars_init = unsafe_chars + [" ", ":", "<"]
 
@@ -46,7 +47,7 @@ class TestUnsafeString(unittest.TestCase):
         assert ldif.UNSAFE_STRING_RE.search("asd\n") is not None
 
 
-class TestLower(unittest.TestCase):
+class TestLower:
     def test_happy(self):
         assert ldif.lower(["ASD", "HuHu"]) == ["asd", "huhu"]
 
@@ -60,13 +61,13 @@ class TestLower(unittest.TestCase):
         assert ldif.lower({"FOo"}) == ["foo"]
 
 
-class TestIsDn(unittest.TestCase):
+class TestIsDn:
     def test_happy(self):
         pass  # TODO
 
 
-class TestLDIFParser(unittest.TestCase):
-    def setUp(self):
+class TestLDIFParser:
+    def setup_method(self):
         self.stream = BytesIO(BYTES)
         self.p = ldif.LDIFParser(self.stream)
 
@@ -92,7 +93,7 @@ class TestLDIFParser(unittest.TestCase):
 
     def _test_error(self, fn):
         self.p._strict = True
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             fn()
 
         with mock.patch("ldif.log.warning") as warning:
@@ -133,7 +134,7 @@ class TestLDIFParser(unittest.TestCase):
     def test_parse_attr_url(self):
         self.p._process_url_schemes = [b"https"]
         attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
-        self.assertIn(URL_CONTENT, attr_value)
+        assert URL_CONTENT in attr_value
 
     def test_parse_attr_url_all_ignored(self):
         attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
@@ -193,8 +194,8 @@ class TestLDIFParser(unittest.TestCase):
         ]
 
 
-class TestLDIFParserEmptyAttrValue(unittest.TestCase):
-    def setUp(self):
+class TestLDIFParserEmptyAttrValue:
+    def setup_method(self):
         self.stream = BytesIO(BYTES_EMPTY_ATTR_VALUE)
         self.p = ldif.LDIFParser(self.stream)
 

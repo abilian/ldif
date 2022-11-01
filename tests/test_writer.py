@@ -1,12 +1,13 @@
-import unittest
 from io import BytesIO
+
+import pytest
 
 import ldif
 from tests.common import BYTES_OUT, DNS, RECORDS
 
 
-class TestLDIFWriter(unittest.TestCase):
-    def setUp(self):
+class TestLDIFWriter:
+    def setup_method(self):
         self.stream = BytesIO()
         self.w = ldif.LDIFWriter(self.stream)
 
@@ -42,7 +43,7 @@ class TestLDIFWriter(unittest.TestCase):
 
     def test_needs_base64_encoding_safe(self):
         result = self.w._needs_base64_encoding("attr_type", "abcABC123_+")
-        self.assertFalse(result)
+        assert not result
 
     def test_unparse_attr_base64(self):
         self.w._unparse_attr("foo", "a\nb\nc")
@@ -72,9 +73,9 @@ class TestLDIFWriter(unittest.TestCase):
         assert value == b"changetype: modify\n"
 
     def test_unparse_changetype_other(self):
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             self.w._unparse_changetype(4)
-        with self.assertRaises(ValueError):
+        with pytest.raises(ValueError):
             self.w._unparse_changetype(1)
 
     def test_unparse(self):
@@ -84,7 +85,7 @@ class TestLDIFWriter(unittest.TestCase):
         assert value == BYTES_OUT
 
     def test_unparse_fail(self):
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             self.w.unparse(DNS[0], "foo")
 
     def test_unparse_binary(self):
