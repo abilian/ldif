@@ -23,13 +23,13 @@ jobs:
   lint:
     <<: *common
     docker:
-      - image: circleci/python:3.11
+      - image: circleci/python:3.10
         environment:
           - TOXENV=lint
   safety:
     <<: *common
     docker:
-      - image: circleci/python:3.11
+      - image: circleci/python:3.10
         environment: TOXENV=safety
   py39:
     <<: *common
@@ -57,4 +57,5 @@ workflows:
       - safety
       - py39
       - py310
-      - py311
+      # Not available on Circle
+      # - py311
