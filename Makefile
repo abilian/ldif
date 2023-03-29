@@ -60,8 +60,9 @@ lint-ci: lint
 lint-all: lint lint-bandit
 
 lint-py:
-	@echo "--> Linting Python files /w flake8"
-	flake8 src tests
+	@echo "--> Linting Python files /w various tools"
+	ruff src tests
+	# 	adt all
 	@echo ""
 
 lint-mypy:
@@ -112,6 +113,7 @@ doc-pdf:
 	make -C docs/_build/latex all-pdf
 
 clean:
+	adt clean
 	rm -f **/*.pyc
 	find . -type d -empty -delete
 	rm -rf *.egg-info *.egg .coverage .eggs .cache .mypy_cache .pyre \
