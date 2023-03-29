@@ -1,3 +1,10 @@
+4.2.0 (2023-03-29)
+------------------
+
+- Update dependencies
+- This removes support for Python < 3.9.
+
+
 4.1.2 (2021-10-27)
 ------------------
 
