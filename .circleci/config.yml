@@ -55,7 +55,6 @@ workflows:
     jobs:
       - lint
       - safety
-      - py37
-      - py38
       - py39
       - py310
+      - py311
