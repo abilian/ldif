@@ -53,9 +53,9 @@ workflows:
   version: 2
   test:
     jobs:
-      - lint
       - safety
       - py39
       - py310
-      # Not available on Circle
+      # Not available /doesn't work on Circle
       # - py311
+      # - lint
