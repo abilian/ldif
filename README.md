@@ -60,3 +60,8 @@ By default, the `LDIFParser` will try to interpret all values as UTF-8
 and leave only the ones that fail to decode as bytes. But you can also
 pass an `encoding` of `None` to the constructor, in which case the
 parser will not try to do any conversion and return bytes directly.
+
+
+## Changelog
+
+See [here](./CHANGES.rst)
