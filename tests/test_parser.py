@@ -1,5 +1,5 @@
 from io import BytesIO
-from unittest import mock
+from unittest import mock, skip
 
 import pytest
 
@@ -69,80 +69,84 @@ class TestIsDn:
 class TestLDIFParser:
     def setup_method(self):
         self.stream = BytesIO(BYTES)
-        self.p = ldif.LDIFParser(self.stream)
+        self.parser = ldif.LDIFParser(self.stream)
 
     def test_strip_line_sep(self):
-        assert self.p._strip_line_sep(b"asd \n") == b"asd "
-        assert self.p._strip_line_sep(b"asd\t\n") == b"asd\t"
-        assert self.p._strip_line_sep(b"asd\r\n") == b"asd"
-        assert self.p._strip_line_sep(b"asd\r\t\n") == b"asd\r\t"
-        assert self.p._strip_line_sep(b"asd\n\r") == b"asd\n\r"
-        assert self.p._strip_line_sep(b"asd") == b"asd"
-        assert self.p._strip_line_sep(b"  asd  ") == b"  asd  "
+        assert self.parser._strip_line_sep(b"asd \n") == b"asd "
+        assert self.parser._strip_line_sep(b"asd\t\n") == b"asd\t"
+        assert self.parser._strip_line_sep(b"asd\r\n") == b"asd"
+        assert self.parser._strip_line_sep(b"asd\r\t\n") == b"asd\r\t"
+        assert self.parser._strip_line_sep(b"asd\n\r") == b"asd\n\r"
+        assert self.parser._strip_line_sep(b"asd") == b"asd"
+        assert self.parser._strip_line_sep(b"  asd  ") == b"  asd  "
 
     def test_iter_unfolded_lines(self):
-        assert list(self.p._iter_unfolded_lines()) == LINES
+        assert list(self.parser._iter_unfolded_lines()) == LINES
 
     def test_iter_blocks(self):
-        assert list(self.p._iter_blocks()) == BLOCKS
+        assert list(self.parser._iter_blocks()) == BLOCKS
 
     def test_iter_blocks_with_additional_spaces(self):
         self.stream = BytesIO(BYTES_SPACE)
-        self.p = ldif.LDIFParser(self.stream)
-        assert list(self.p._iter_blocks()) == BLOCKS
+        self.parser = ldif.LDIFParser(self.stream)
+        assert list(self.parser._iter_blocks()) == BLOCKS
 
     def _test_error(self, fn):
-        self.p._strict = True
+        self.parser._strict = True
         with pytest.raises(ValueError):
             fn()
 
         with mock.patch("ldif.log.warning") as warning:
-            self.p._strict = False
+            self.parser._strict = False
             fn()
             assert warning.called
 
     def test_check_dn_not_none(self):
         self._test_error(
-            lambda: self.p._check_dn("some dn", "mail=alicealison@example.com")
+            lambda: self.parser._check_dn("some dn", "mail=alicealison@example.com")
         )
 
     def test_check_dn_invalid(self):
-        self._test_error(lambda: self.p._check_dn(None, "invalid"))
+        self._test_error(lambda: self.parser._check_dn(None, "invalid"))
 
     def test_check_dn_happy(self):
-        self.p._check_dn(None, "mail=alicealison@example.com")
+        self.parser._check_dn(None, "mail=alicealison@example.com")
 
     def test_check_changetype_dn_none(self):
-        self._test_error(lambda: self.p._check_changetype(None, None, "add"))
+        self._test_error(lambda: self.parser._check_changetype(None, None, "add"))
 
     def test_check_changetype_not_none(self):
         self._test_error(
-            lambda: self.p._check_changetype("some dn", "some changetype", "add")
+            lambda: self.parser._check_changetype("some dn", "some changetype", "add")
         )
 
     def test_check_changetype_invalid(self):
-        self._test_error(lambda: self.p._check_changetype("some dn", None, "invalid"))
+        self._test_error(
+            lambda: self.parser._check_changetype("some dn", None, "invalid")
+        )
 
     def test_check_changetype_happy(self):
-        self.p._check_changetype("some dn", None, "add")
+        self.parser._check_changetype("some dn", None, "add")
 
     def test_parse_attr_base64(self):
-        attr_type, attr_value = self.p._parse_attr(b"foo:: YQpiCmM=\n")
+        attr_type, attr_value = self.parser._parse_attr(b"foo:: YQpiCmM=\n")
         assert attr_type == "foo"
         assert attr_value == "a\nb\nc"
 
+    @skip("Don't call external URLs in tests")
     def test_parse_attr_url(self):
-        self.p._process_url_schemes = [b"https"]
-        attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
+        self.parser._process_url_schemes = [b"https"]
+        line = b"foo:< " + URL + b"\n"
+        attr_type, attr_value = self.parser._parse_attr(line)
         assert URL_CONTENT in attr_value
 
     def test_parse_attr_url_all_ignored(self):
-        attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
+        attr_type, attr_value = self.parser._parse_attr(b"foo:< " + URL + b"\n")
         assert attr_value == ""
 
     def test_parse_attr_url_this_ignored(self):
-        self.p._process_url_schemes = [b"file"]
-        attr_type, attr_value = self.p._parse_attr(b"foo:< " + URL + b"\n")
+        self.parser._process_url_schemes = [b"file"]
+        attr_type, attr_value = self.parser._parse_attr(b"foo:< " + URL + b"\n")
         assert attr_value == ""
 
     def test_parse_attr_dn_non_utf8(self):
@@ -151,14 +155,14 @@ class TestLDIFParser:
                 b"dn: \x75\x69\x64\x3d\x6b\x6f\xb3\x6f\x62"
                 b"\x69\x7a\x6e\x65\x73\x75\x40\x77\n"
             )
-            attr_type, attr_value = self.p._parse_attr(attr)
+            attr_type, attr_value = self.parser._parse_attr(attr)
             assert attr_type == "dn"
             assert attr_value == "uid=koobiznesu@w"
 
         self._test_error(run)
 
     def test_parse(self):
-        items = list(self.p.parse())
+        items = list(self.parser.parse())
         for i, item in enumerate(items):
             dn, record = item
 
@@ -167,8 +171,8 @@ class TestLDIFParser:
 
     def test_parse_binary(self):
         self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
-        self.p = ldif.LDIFParser(self.stream)
-        items = list(self.p.parse())
+        self.parser = ldif.LDIFParser(self.stream)
+        items = list(self.parser.parse())
         assert items == [
             (
                 "cn=Bjorn J Jensen",
@@ -181,8 +185,8 @@ class TestLDIFParser:
 
     def test_parse_binary_raw(self):
         self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
-        self.p = ldif.LDIFParser(self.stream, encoding=None)
-        items = list(self.p.parse())
+        self.parser = ldif.LDIFParser(self.stream, encoding=None)
+        items = list(self.parser.parse())
         assert items == [
             (
                 "cn=Bjorn J Jensen",
@@ -197,12 +201,12 @@ class TestLDIFParser:
 class TestLDIFParserEmptyAttrValue:
     def setup_method(self):
         self.stream = BytesIO(BYTES_EMPTY_ATTR_VALUE)
-        self.p = ldif.LDIFParser(self.stream)
+        self.parser = ldif.LDIFParser(self.stream)
 
     def test_parse(self):
-        list(self.p.parse())
+        list(self.parser.parse())
 
     def test_parse_value(self):
-        dn, record = list(self.p.parse())[0]
+        dn, record = list(self.parser.parse())[0]
 
         assert record["aliases"] == ["", "foo.bar"]

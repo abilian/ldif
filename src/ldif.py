@@ -178,9 +178,8 @@ class LDIFWriter:
 
         :type dn: string
         :param dn: distinguished name
-
         :type record: Union[Dict[string, List[string]], List[Tuple]]
-        :param record: Either a dictionary holding  an entry or a list of
+        :param record: Either a dictionary holding an entry or a list of
             additions (2-tuple) or modifications (3-tuple).
         """
         self._unparse_attr("dn", dn)
