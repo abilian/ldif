@@ -166,6 +166,8 @@ class LDIFWriter:
             elif mod_len == 3:
                 mod_op, mod_type, mod_vals = mod
                 self._unparse_attr(MOD_OPS[mod_op], mod_type)
+            else:
+                raise ValueError(f"modlist item of wrong length: {mod_len}")
 
             for mod_val in mod_vals:
                 self._unparse_attr(mod_type, mod_val)

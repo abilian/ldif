@@ -9,49 +9,49 @@ from tests.common import BYTES_OUT, DNS, RECORDS
 class TestLDIFWriter:
     def setup_method(self):
         self.stream = BytesIO()
-        self.w = ldif.LDIFWriter(self.stream)
+        self.writer = ldif.LDIFWriter(self.stream)
 
     def test_fold_line_10_n(self):
-        self.w._cols = 10
-        self.w._line_sep = b"\n"
-        self.w._fold_line(b"abcdefghijklmnopqrstuvwxyz")
+        self.writer._cols = 10
+        self.writer._line_sep = b"\n"
+        self.writer._fold_line(b"abcdefghijklmnopqrstuvwxyz")
         folded = b"abcdefghij\n klmnopqrs\n tuvwxyz\n"
         assert self.stream.getvalue() == folded
 
     def test_fold_line_12_underscore(self):
-        self.w._cols = 12
-        self.w._line_sep = b"__"
-        self.w._fold_line(b"abcdefghijklmnopqrstuvwxyz")
+        self.writer._cols = 12
+        self.writer._line_sep = b"__"
+        self.writer._fold_line(b"abcdefghijklmnopqrstuvwxyz")
         folded = b"abcdefghijkl__ mnopqrstuvw__ xyz__"
         assert self.stream.getvalue() == folded
 
     def test_fold_line_oneline(self):
-        self.w._cols = 100
-        self.w._line_sep = b"\n"
-        self.w._fold_line(b"abcdefghijklmnopqrstuvwxyz")
+        self.writer._cols = 100
+        self.writer._line_sep = b"\n"
+        self.writer._fold_line(b"abcdefghijklmnopqrstuvwxyz")
         folded = b"abcdefghijklmnopqrstuvwxyz\n"
         assert self.stream.getvalue() == folded
 
     def test_needs_base64_encoding_forced(self):
-        self.w._base64_attrs = ["attr_type"]
-        result = self.w._needs_base64_encoding("attr_type", "attr_value")
+        self.writer._base64_attrs = ["attr_type"]
+        result = self.writer._needs_base64_encoding("attr_type", "attr_value")
         assert result
 
     def test_needs_base64_encoding_not_safe(self):
-        result = self.w._needs_base64_encoding("attr_type", "\r")
+        result = self.writer._needs_base64_encoding("attr_type", "\r")
         assert result
 
     def test_needs_base64_encoding_safe(self):
-        result = self.w._needs_base64_encoding("attr_type", "abcABC123_+")
+        result = self.writer._needs_base64_encoding("attr_type", "abcABC123_+")
         assert not result
 
     def test_unparse_attr_base64(self):
-        self.w._unparse_attr("foo", "a\nb\nc")
+        self.writer._unparse_attr("foo", "a\nb\nc")
         value = self.stream.getvalue()
         assert value == b"foo:: YQpiCmM=\n"
 
     def test_unparse_entry_record(self):
-        self.w._unparse_entry_record(RECORDS[0])
+        self.writer._unparse_entry_record(RECORDS[0])
         value = self.stream.getvalue()
         assert value == (
             b"cn: Alison Alison\n"
@@ -63,42 +63,42 @@ class TestLDIFWriter:
         )
 
     def test_unparse_changetype_add(self):
-        self.w._unparse_changetype(2)
+        self.writer._unparse_changetype(2)
         value = self.stream.getvalue()
         assert value == b"changetype: add\n"
 
     def test_unparse_changetype_modify(self):
-        self.w._unparse_changetype(3)
+        self.writer._unparse_changetype(3)
         value = self.stream.getvalue()
         assert value == b"changetype: modify\n"
 
     def test_unparse_changetype_other(self):
         with pytest.raises(ValueError):
-            self.w._unparse_changetype(4)
+            self.writer._unparse_changetype(4)
         with pytest.raises(ValueError):
-            self.w._unparse_changetype(1)
+            self.writer._unparse_changetype(1)
 
     def test_unparse(self):
         for i, record in enumerate(RECORDS):
-            self.w.unparse(DNS[i], record)
+            self.writer.unparse(DNS[i], record)
         value = self.stream.getvalue()
         assert value == BYTES_OUT
 
     def test_unparse_fail(self):
         with pytest.raises(TypeError):
-            self.w.unparse(DNS[0], "foo")
+            self.writer.unparse(DNS[0], "foo")
 
     def test_unparse_binary(self):
-        self.w.unparse("cn=Bjorn J Jensen", {"jpegPhoto": [b"\xf0\xf2\xf3"]})
+        self.writer.unparse("cn=Bjorn J Jensen", {"jpegPhoto": [b"\xf0\xf2\xf3"]})
         value = self.stream.getvalue()
         assert value == b"dn: cn=Bjorn J Jensen\njpegPhoto:: 8PLz\n\n"
 
     def test_unparse_unicode_dn(self):
-        self.w.unparse("cn=Björn J Jensen", {"foo": ["bar"]})
+        self.writer.unparse("cn=Björn J Jensen", {"foo": ["bar"]})
         value = self.stream.getvalue()
         assert value == b"dn:: Y249QmrDtnJuIEogSmVuc2Vu\nfoo: bar\n\n"
 
     def test_unparse_uniqode(self):
-        self.w.unparse("o=x", {"test": ["日本語"]})
+        self.writer.unparse("o=x", {"test": ["日本語"]})
         value = self.stream.getvalue()
         assert value == b"dn: o=x\ntest:: 5pel5pys6Kqe\n\n"
