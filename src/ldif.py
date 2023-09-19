@@ -5,7 +5,8 @@ import base64
 import logging
 import re
 from collections import OrderedDict
-from typing import Collection, Iterator, List, Optional, Tuple, Union
+from collections.abc import Collection, Iterator
+from typing import Optional, Union
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -51,7 +52,7 @@ UNSAFE_STRING_PATTERN = (
 UNSAFE_STRING_RE = re.compile(UNSAFE_STRING_PATTERN)
 
 
-def lower(string_list: Optional[Collection[str]]) -> List[str]:
+def lower(string_list: Optional[Collection[str]]) -> list[str]:
     """Return a list with the lowercased items of l."""
     return [i.lower() for i in string_list or []]
 
@@ -244,7 +245,7 @@ class LDIFParser:
         self.byte_counter = 0  #: number of bytes that have been read
         self.records_read = 0  #: number of records that have been read
 
-    def parse(self) -> Iterator[Tuple[Optional[str], dict]]:
+    def parse(self) -> Iterator[tuple[Optional[str], dict]]:
         """Iterate LDIF entry records.
 
         :rtype: Iterator[Tuple[string, Dict]]
@@ -357,7 +358,7 @@ class LDIFParser:
         if attr_value not in CHANGE_TYPES:
             self._error(f"changetype value {attr_value} is invalid.")
 
-    def _parse_entry_record(self, lines: List[bytes]) -> Tuple[Optional[str], dict]:
+    def _parse_entry_record(self, lines: list[bytes]) -> tuple[Optional[str], dict]:
         """Parse a single entry record from a list of lines."""
         dn = None
         entry: dict = OrderedDict()

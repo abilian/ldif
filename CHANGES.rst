@@ -1,3 +1,9 @@
+4.2.1 (2023-09-19)
+------------------
+
+- Update dependencies
+- Update typing idioms to Python >= 3.9.
+
 4.2.0 (2023-03-29)
 ------------------
 
