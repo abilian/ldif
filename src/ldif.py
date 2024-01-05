@@ -135,7 +135,7 @@ class LDIFWriter:
         :type entry: Dict[string, List[string]]
         :param entry: Dictionary holding an entry
         """
-        for attr_type in sorted(entry.keys()):
+        for attr_type in entry.keys():
             for attr_value in entry[attr_type]:
                 self._unparse_attr(attr_type, attr_value)
 
