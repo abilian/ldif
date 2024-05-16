@@ -61,7 +61,7 @@ lint-all: lint lint-bandit
 
 lint-py:
 	@echo "--> Linting Python files /w various tools"
-	ruff src tests
+	ruff check src tests
 	# 	adt all
 	@echo ""
 
@@ -126,6 +126,8 @@ tidy: clean
 update-deps:
 	pip install -U pip setuptools wheel
 	poetry update
+	poetry show -o
+	pre-commit autoupdate
 
 publish: clean
 	git push --tags

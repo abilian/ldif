@@ -18,10 +18,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pip = "^23.0.1"
 
-[tool.poetry.dev-dependencies]
-abilian-devtools = "^0.4.13"
+[tool.poetry.group.dev.dependencies]
+abilian-devtools = "^0.5"
 
 # Testing
 # pytest = "*"
@@ -30,7 +29,7 @@ coveralls = "*"
 typeguard = "*"
 
 # Needed for some reason
-pyyaml = "*"
+# pyyaml = "*"
 
 # Doc
 sphinx = "*"
@@ -38,7 +37,6 @@ sphinx-rtd-theme = "*"
 restructuredtext_lint = "*"
 recommonmark = "*"
 
-[tool.poetry.group.dev.dependencies]
 docformatter = "^1.6.0"
 
 [build-system]
