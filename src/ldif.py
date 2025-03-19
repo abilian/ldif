@@ -134,10 +134,22 @@ class LDIFWriter:
         """
         :type entry: Dict[string, List[string]]
         :param entry: Dictionary holding an entry
+
+        Process "changetype" attribute first if it exists and then rest of attributes
         """
-        for attr_type in entry.keys():
+        keys = list(entry.keys())
+
+        for attr_type in keys:
+            if isinstance(attr_type, str) and "changetype" in attr_type.lower():
+               for attr_value in entry[attr_type]:
+                   self._unparse_attr("changetype", attr_value)
+
+        for attr_type in keys:
+            if attr_type.lower() == "changetype":
+                continue
             for attr_value in entry[attr_type]:
                 self._unparse_attr(attr_type, attr_value)
+
 
     def _unparse_changetype(self, mod_len):
         """Detect and write the changetype."""
