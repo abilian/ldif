@@ -6,7 +6,7 @@ license = {text = "BSD"}
 requires-python = "<4.0,>=3.9"
 dependencies = []
 name = "ldif"
-version = "4.2.5"
+version = "4.3.0"
 description = "generate and parse LDIF data (see RFC 2849)."
 classifiers = [
     "Development Status :: 5 - Production/Stable",
