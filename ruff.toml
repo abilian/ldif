@@ -1,0 +1,46 @@
+preview = true
+
+lint.select = [
+    "ALL",
+]
+
+lint.extend-ignore = [
+    # Later...
+    "ANN", # flake8-annotations
+    "D", # pydocstyle
+    "EM", # flake8-errmsg
+    "PTH", # flake8-use-pathlib
+    "DOC",
+    "TRY",
+    "PLR",
+    "ARG",
+    "FBT",
+    "ERA",
+    "RUF",
+    "S",
+    "TD",
+    "FIX",
+
+    #  More specific
+    "COM812", # Missing trailing comma
+    "CPY001", # Missing copyright header
+    "E501", # Line too long
+    "I001", # Import block is un-sorted or un-formatted
+    "S101", # Use of assert detected
+    "ARG002",
+    "FBT002",
+    "FBT003",
+    "PLC1901",
+    "PLR2004",
+    "PLR6301",
+    "PLW0603",
+    "PLW1514",
+    "PT011",
+    "S104",
+    "S108",
+    "S404",
+    "S603",
+    "SIM117",
+    "SLF001",
+    "T201",
+]
