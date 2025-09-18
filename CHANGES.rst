@@ -1,3 +1,16 @@
+4.3.0 (2025-09-18)
+------------------
+
+- **Build System Migration**: Migrated from Poetry to PDM for dependency management
+- **Tool Updates**: Upgraded to uv for faster dependency resolution and installation
+- **Code Modernization**: Enhanced type annotations with modern Python typing syntax:
+  - Added ``from __future__ import annotations``
+  - Updated union syntax to use ``|`` operator (e.g., ``str | None`` instead of ``Optional[str]``)
+  - Improved TYPE_CHECKING imports
+- **Development Tools**: Added pyrefly for additional static analysis
+- **CI/CD Improvements**: Extended Python version support to include 3.12, 3.13, and 3.14
+- **Pre-commit Updates**: Updated ruff and pre-commit hooks to latest versions
+
 4.2.3 (2023-09-19)
 ------------------
 
