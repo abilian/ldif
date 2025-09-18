@@ -52,26 +52,14 @@ test-with-typeguard:
 #
 # Various Checkers
 #
-lint: lint-py lint-mypy lint-rst lint-doc
+lint: lint-py lint-rst lint-doc
 
 lint-ci: lint
-
-lint-all: lint lint-bandit
 
 lint-py:
 	@echo "--> Linting Python files /w various tools"
 	ruff check src tests
-	# 	adt all
-	@echo ""
-
-lint-mypy:
-	@echo "--> Typechecking Python files w/ mypy"
-	mypy src tests
-	@echo ""
-
-lint-travis:
-	@echo "--> Linting .travis.yml files"
-	travis lint --no-interactive
+	pyrefly check src
 	@echo ""
 
 lint-rst:

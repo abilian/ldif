@@ -258,10 +258,9 @@ class LDIFParser:
         """Strip trailing line separators from s, but no other whitespaces."""
         if s[-2:] == b"\r\n":
             return s[:-2]
-        elif s[-1:] == b"\n":
+        if s[-1:] == b"\n":
             return s[:-1]
-        else:
-            return s
+        return s
 
     def _iter_unfolded_lines(self):
         """Iter input unfoled lines.
@@ -336,8 +335,7 @@ class LDIFParser:
     def _error(self, msg):
         if self._strict:
             raise ValueError(msg)
-        else:
-            log.warning(msg)
+        log.warning(msg)
 
     def _check_dn(self, dn, attr_value):
         """Check dn attribute for issues."""
