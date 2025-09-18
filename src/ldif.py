@@ -1,13 +1,17 @@
 """ldif - generate and parse LDIF data (see RFC 2849)."""
 
+from __future__ import annotations
+
 import base64
 import logging
 import re
 from collections import OrderedDict
-from collections.abc import Collection, Iterator
-from typing import Optional, Union
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 from urllib.request import urlopen
+
+if TYPE_CHECKING:
+    from collections.abc import Collection, Iterator
 
 __version__ = "4.1.0"
 
@@ -51,7 +55,7 @@ UNSAFE_STRING_PATTERN = (
 UNSAFE_STRING_RE = re.compile(UNSAFE_STRING_PATTERN)
 
 
-def lower(string_list: Optional[Collection[str]]) -> list[str]:
+def lower(string_list: Collection[str] | None) -> list[str]:
     """Return a list with the lowercased items of l."""
     return [i.lower() for i in string_list or []]
 
@@ -124,9 +128,9 @@ class LDIFWriter:
             if not isinstance(attr_value, bytes):
                 attr_value = attr_value.encode(self._encoding)
             encoded = base64.encodebytes(attr_value).replace(b"\n", b"").decode("ascii")
-            line = ":: ".join([attr_type, encoded])
+            line = f"{attr_type}:: {encoded}"
         else:
-            line = ": ".join([attr_type, attr_value])
+            line = f"{attr_type}: {attr_value}"
         self._fold_line(line.encode("ascii"))
 
     def _unparse_entry_record(self, entry):
@@ -134,7 +138,7 @@ class LDIFWriter:
         :type entry: Dict[string, List[string]]
         :param entry: Dictionary holding an entry
         """
-        for attr_type in entry.keys():
+        for attr_type in entry:
             for attr_value in entry[attr_type]:
                 self._unparse_attr(attr_type, attr_value)
 
@@ -175,7 +179,7 @@ class LDIFWriter:
             if mod_len == 3:
                 self._output_file.write(b"-" + self._line_sep)
 
-    def unparse(self, dn: str, record: Union[list, dict]):
+    def unparse(self, dn: str, record: list | dict):
         """Write an entry or change record to the output file.
 
         :type dn: string
@@ -230,7 +234,7 @@ class LDIFParser:
         ignored_attr_types=(),
         process_url_schemes=(),
         line_sep=b"\n",
-        encoding: Optional[str] = "utf8",
+        encoding: str | None = "utf8",
         strict=True,
     ):
         self._input_file = input_file
@@ -244,7 +248,7 @@ class LDIFParser:
         self.byte_counter = 0  #: number of bytes that have been read
         self.records_read = 0  #: number of records that have been read
 
-    def parse(self) -> Iterator[tuple[Optional[str], dict]]:
+    def parse(self) -> Iterator[tuple[str | None, dict]]:
         """Iterate LDIF entry records.
 
         :rtype: Iterator[Tuple[string, Dict]]
@@ -355,7 +359,7 @@ class LDIFParser:
         if attr_value not in CHANGE_TYPES:
             self._error(f"changetype value {attr_value} is invalid.")
 
-    def _parse_entry_record(self, lines: list[bytes]) -> tuple[Optional[str], dict]:
+    def _parse_entry_record(self, lines: list[bytes]) -> tuple[str | None, dict]:
         """Parse a single entry record from a list of lines."""
         dn = None
         entry: dict = OrderedDict()
