@@ -170,7 +170,7 @@ class TestLDIFParser:
             assert record == RECORDS[i]
 
     def test_parse_binary(self):
-        self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
+        self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\njpegPhoto:: 8PLz\nfoo: bar")
         self.parser = ldif.LDIFParser(self.stream)
         items = list(self.parser.parse())
         assert items == [
@@ -184,7 +184,7 @@ class TestLDIFParser:
         ]
 
     def test_parse_binary_raw(self):
-        self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\n" b"jpegPhoto:: 8PLz\nfoo: bar")
+        self.stream = BytesIO(b"dn: cn=Bjorn J Jensen\njpegPhoto:: 8PLz\nfoo: bar")
         self.parser = ldif.LDIFParser(self.stream, encoding=None)
         items = list(self.parser.parse())
         assert items == [

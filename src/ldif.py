@@ -1,6 +1,5 @@
 """ldif - generate and parse LDIF data (see RFC 2849)."""
 
-
 import base64
 import logging
 import re
