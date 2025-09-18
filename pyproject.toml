@@ -1,47 +1,44 @@
-[tool.poetry]
+[project]
+authors = [
+    {name = "Abilian SAS", email = "dev@abilian.com"},
+]
+license = {text = "BSD"}
+requires-python = "<4.0,>=3.9"
+dependencies = []
 name = "ldif"
 version = "4.2.5"
 description = "generate and parse LDIF data (see RFC 2849)."
-license = "BSD"
 classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python",
-  "License :: OSI Approved :: BSD License",
-  "Intended Audience :: Developers",
-  "Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP",
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Developers",
+    "Topic :: System :: Systems Administration :: Authentication/Directory :: LDAP",
 ]
-homepage = "https://github.com/abilian/ldif"
-documentation = "https://ldif.readthedocs.io/en/latest/"
-authors = ["Abilian SAS <dev@abilian.com>"]
 readme = "README.md"
 
-[tool.poetry.dependencies]
-python = "^3.9"
+[project.urls]
+homepage = "https://github.com/abilian/ldif"
+documentation = "https://ldif.readthedocs.io/en/latest/"
 
-[tool.poetry.group.dev.dependencies]
-abilian-devtools = "^0.5"
-
-# Testing
-# pytest = "*"
-pytest-randomly = "*"
-coveralls = "*"
-typeguard = "*"
-
-# Needed for some reason
-# pyyaml = "*"
-
-# Doc
-sphinx = "*"
-sphinx-rtd-theme = "*"
-restructuredtext_lint = "*"
-recommonmark = "*"
-
-docformatter = "^1.6.0"
+[dependency-groups]
+dev = [
+    "abilian-devtools<1.0,>=0.5",
+    "pytest-randomly",
+    "coveralls",
+    "typeguard",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "restructuredtext-lint",
+    "recommonmark",
+    "docformatter<2.0.0,>=1.6.0",
+    "pyrefly>=0.33.0",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [tool.isort]
 profile = "black"
